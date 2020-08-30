@@ -1,7 +1,10 @@
 language: node_js
-
-node_js:
-- node
-- 'lts/*'
-
-cache: npm
+services:
+- docker
+script:
+- docker build -t dmitriiz/robotles .
+after_success:
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+  docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+  docker push dmitriiz/robotles;
+  fi
